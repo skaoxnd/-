@@ -43,8 +43,8 @@ export default function BenfordChart({ data, showLine }: BenfordChartProps) {
         <Legend wrapperStyle={{ paddingTop: "20px" }} />
         
         <Bar 
-          dataKey="?제분포" 
-          name="?의??C ?출 ??" 
+          dataKey="실제분포" 
+          name="용의자 C 지출 내역" 
           fill="#6b7280" 
           radius={[4, 4, 0, 0]} 
           maxBarSize={60}

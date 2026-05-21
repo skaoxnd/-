@@ -36,7 +36,7 @@ export default function Stage4Page() {
   const visualization = (
     <div className="w-full h-full p-4 flex flex-col items-center relative">
       <h2 className="text-xl font-mono text-[var(--neon-green)] mb-6 tracking-widest drop-shadow-[0_0_8px_rgba(57,255,20,0.8)]">
-        {isResolved ? "??처 ?정 ?료 (?곽 물류 창고)" : "지리적 ?로?일?(버퍼??률 ?"}
+        {isResolved ? "은신처 특정 완료 (외곽 물류 창고)" : "지리적 프로파일링 (버퍼존 확률 맵)"}
       </h2>
       <div className="flex-1 w-full flex items-center justify-center">
         <MapScatter 
@@ -49,7 +49,7 @@ export default function Stage4Page() {
       </div>
       {clickAttempt && !isResolved && (
         <div className="absolute bottom-4 font-mono text-xs text-gray-500">
-          마??분석 좌표: [{clickAttempt.x}, {clickAttempt.y}]
+          마지막 분석 좌표: [{clickAttempt.x}, {clickAttempt.y}]
         </div>
       )}
     </div>
@@ -78,7 +78,7 @@ export default function Stage4Page() {
           />
           <span className="font-mono text-[var(--crimson-red)]">{bufferRadius}</span>
         </div>
-        {showError && <p className="text-[var(--crimson-red)] text-sm font-mono mt-2 animate-pulse">?당 좌표???률 밀?? ???다. 붉???군집??중앙???릭?십?오.</p>}
+        {showError && <p className="text-[var(--crimson-red)] text-sm font-mono mt-2 animate-pulse">해당 좌표는 확률 밀도가 낮습니다. 붉은색 군집의 중앙을 클릭하십시오.</p>}
       </div>
 
       {isResolved && (
@@ -87,7 +87,7 @@ export default function Stage4Page() {
             onClick={() => router.push("/stage5")}
             className="flex items-center gap-2 px-6 py-3 bg-[var(--neon-green)] text-black font-bold font-mono hover:shadow-[0_0_15px_var(--neon-green)] transition-all animate-pulse"
           >
-            최종 ?의???문 <ArrowRight size={20} />
+            최종 용의자 심문 <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

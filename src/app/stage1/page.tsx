@@ -82,10 +82,10 @@ export default function Stage1Page() {
     <div className="w-full h-full p-4 flex flex-col items-center">
       <h2 className="text-xl font-mono text-[var(--neon-green)] mb-6 tracking-widest drop-shadow-[0_0_8px_rgba(57,255,20,0.8)]">
         {selectedVar === 'Type' 
-          ? "범죄 ?형?미??건수 (?슨????)" 
+          ? "범죄 유형별 미검거 건수 (심슨의 역설)" 
           : selectedVar !== 'None' 
-          ? "?순 분할 ?이??(?이???음)" 
-          : "지?? ?체 미?거율"}
+          ? "단순 분할 데이터 (의미 없음)" 
+          : "지역별 전체 미검거율"}
       </h2>
       <div className="w-full flex-1 min-h-[300px]">
         <CustomBarChart 
@@ -104,9 +104,9 @@ export default function Stage1Page() {
       <div className="flex flex-col bg-black/40 p-6 rounded border border-gray-800">
         <div className="flex items-center gap-3 mb-4">
           <Filter className="text-[var(--neon-green)]" />
-          <h4 className="text-lg font-mono text-gray-200">분석 변??Variable) ?택</h4>
+          <h4 className="text-lg font-mono text-gray-200">분석 변인(Variable) 선택</h4>
         </div>
-        <p className="text-sm text-gray-500 mb-4">?떤 변?? 기??로 ?이?? 분할?야 진실???러?? ?택?십?오.</p>
+        <p className="text-sm text-gray-500 mb-4">어떤 변인을 기준으로 데이터를 분할해야 진실이 드러날지 선택하십시오.</p>
         
         <div className="grid grid-cols-3 gap-3">
           <button onClick={() => setSelectedVar('Age')} className={`p-3 font-mono border transition-all ${selectedVar === 'Age' ? 'border-[var(--neon-green)] text-[var(--neon-green)]' : 'border-gray-700 text-gray-400 hover:border-gray-500'}`}>연령별</button>
@@ -117,12 +117,12 @@ export default function Stage1Page() {
 
       {selectedVar === 'Type' && !isResolved && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col bg-black/40 p-6 rounded border border-[var(--crimson-red)]">
-          <h4 className="text-lg font-mono text-[var(--crimson-red)] mb-4">최종 ?단: 진범???제 ??처??</h4>
+          <h4 className="text-lg font-mono text-[var(--crimson-red)] mb-4">최종 판단: 진범의 실제 은신처는?</h4>
           <div className="flex gap-4">
             <button onClick={() => handleSelectArea('C구역')} className="flex-1 py-3 bg-gray-800 text-white hover:bg-gray-700 font-mono">C구역 (빈?가)</button>
-            <button onClick={() => handleSelectArea('A구역')} className="flex-1 py-3 bg-[var(--crimson-red)] text-white hover:bg-red-700 font-mono font-bold">A구역 (?피?????</button>
+            <button onClick={() => handleSelectArea('A구역')} className="flex-1 py-3 bg-[var(--crimson-red)] text-white hover:bg-red-700 font-mono font-bold">A구역 (오피스 타운)</button>
           </div>
-          {showError && <p className="text-[var(--crimson-red)] text-sm font-mono mt-3 animate-pulse">?답?니?? 차트??시 분석?십?오.</p>}
+          {showError && <p className="text-[var(--crimson-red)] text-sm font-mono mt-3 animate-pulse">오답입니다. 차트를 다시 분석하십시오.</p>}
         </motion.div>
       )}
 
@@ -132,7 +132,7 @@ export default function Stage1Page() {
             onClick={() => router.push("/stage2")}
             className="flex items-center gap-2 px-6 py-3 bg-[var(--neon-green)] text-black font-bold font-mono hover:shadow-[0_0_15px_var(--neon-green)] transition-all"
           >
-            ?음 추리 ?계?<ArrowRight size={20} />
+            다음 추리 단계로 <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

@@ -46,7 +46,7 @@ export default function Stage3Page() {
   const visualization = (
     <div className="w-full h-full p-4 flex flex-col items-center">
       <h2 className="text-xl font-mono text-[var(--neon-green)] mb-6 tracking-widest drop-shadow-[0_0_8px_rgba(57,255,20,0.8)]">
-        {selectedSuspect ? `계량문체 ?? ?박 메일 vs ${stage3Config.data.suspects[selectedSuspect].name}` : "문체 ??관??조표"}
+        {selectedSuspect ? `계량문체학 분석: 협박 메일 vs ${stage3Config.data.suspects[selectedSuspect].name}` : "문체 상관관계 대조표"}
       </h2>
       <div className="w-full flex-1 min-h-[300px]">
         {selectedSuspect !== null ? (
@@ -54,7 +54,7 @@ export default function Stage3Page() {
             data={getChartData()} 
             xAxisKey="name" 
             keys={[
-              { key: "?박메일", color: "var(--crimson-red)" },
+              { key: "협박메일", color: "var(--crimson-red)" },
               { key: stage3Config.data.suspects[selectedSuspect].name, color: "var(--neon-green)" }
             ]} 
             stacked={false}
@@ -62,7 +62,7 @@ export default function Stage3Page() {
           />
         ) : (
           <div className="flex items-center justify-center h-full text-gray-600 font-mono border border-dashed border-gray-700 rounded-lg">
-            ?조할 ?의?? ?택?십?오.
+            대조할 용의자를 선택하십시오.
           </div>
         )}
       </div>
@@ -94,14 +94,14 @@ export default function Stage3Page() {
 
       {selectedSuspect !== null && !isResolved && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col bg-black/40 p-6 rounded border border-[var(--neon-green)]">
-          <h4 className="text-lg font-mono text-[var(--neon-green)] mb-4">??관?분석 ?료</h4>
+          <h4 className="text-lg font-mono text-[var(--neon-green)] mb-4">상관관계 분석 완료</h4>
           <button 
             onClick={handleVerify} 
             className="w-full py-3 bg-[var(--neon-green)] text-black hover:bg-cyan-600 font-mono font-bold transition-colors"
           >
-            진범 ?정
+            진범 특정
           </button>
-          {showError && <p className="text-[var(--crimson-red)] text-sm font-mono mt-3 animate-pulse">불일? ?계?으???관계? ?무 ???다.</p>}
+          {showError && <p className="text-[var(--crimson-red)] text-sm font-mono mt-3 animate-pulse">불일치. 통계적으로 상관관계가 너무 낮습니다.</p>}
         </motion.div>
       )}
 
@@ -111,7 +111,7 @@ export default function Stage3Page() {
             onClick={() => router.push("/stage4")}
             className="flex items-center gap-2 px-6 py-3 bg-[var(--neon-green)] text-black font-bold font-mono hover:shadow-[0_0_15px_var(--neon-green)] transition-all"
           >
-            ?음 추리 ?계?<ArrowRight size={20} />
+            다음 추리 단계로 <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

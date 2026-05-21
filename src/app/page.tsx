@@ -41,7 +41,7 @@ export default function IntroPage() {
           <ShieldAlert size={48} className="animate-pulse" />
           <div>
             <h1 className="text-4xl font-mono font-bold tracking-widest neon-text-green">
-              보이지 ?는 ?계?? 마??증명
+              보이지 않는 설계자와 마지막 증명
             </h1>
             <p className="text-gray-400 font-mono mt-2">N.P.A STATISTICAL PROFILING UNIT</p>
           </div>
@@ -80,8 +80,8 @@ export default function IntroPage() {
             className="flex flex-col items-center gap-4"
           >
             <p className="text-gray-400 font-mono text-center">
-              ?신??무기??직감???닌 '차????이???니??<br/>
-              ?????견??부?고 진범??찾아?십?오.
+              당신의 무기는 직감이 아닌 '차가운 데이터'입니다.<br/>
+              통계의 편견을 부수고 진범을 찾아내십시오.
             </p>
             <button
               onClick={() => router.push("/stage1")}

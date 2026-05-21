@@ -23,7 +23,7 @@ export default function TimeScatterChart({ data, isMacro }: TimeScatterChartProp
         <XAxis 
           type="number" 
           dataKey="x" 
-          name="?간 (?" 
+          name="시간 (초)" 
           stroke="#888" 
           unit="s"
           domain={[0, 100]} // Just showing a 100s window
@@ -31,7 +31,7 @@ export default function TimeScatterChart({ data, isMacro }: TimeScatterChartProp
         <YAxis 
           type="number" 
           dataKey="y" 
-          name="?릭 간격" 
+          name="클릭 간격" 
           stroke="#888" 
           unit="s"
           domain={isMacro ? [0.245, 0.255] : [0, 1.5]}
@@ -39,7 +39,7 @@ export default function TimeScatterChart({ data, isMacro }: TimeScatterChartProp
         <Tooltip 
           cursor={{ strokeDasharray: '3 3' }} 
           contentStyle={{ backgroundColor: "#1A1D24", border: "1px solid #333", color: "#E0E0E0" }}
-          formatter={(value: any) => typeof value === 'number' ? value.toFixed(4) + 's' : String(value)}
+          formatter={(value: any) => Number(value).toFixed(4) + 's'}
         />
         <Scatter 
           name="Click Interval" 

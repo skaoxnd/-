@@ -10,7 +10,7 @@ interface ControlPanelProps {
 export default function ControlPanel({ title = "CONTROL CONSOLE", children }: ControlPanelProps) {
   return (
     <div className="w-full h-full bg-[#0d0f12] border-t border-gray-800 p-6 flex flex-col relative overflow-hidden">
-      {/* ?식???캔?인 */}
+      {/* 장식용 스캔라인 */}
       <div className="absolute inset-0 pointer-events-none opacity-5" 
            style={{ backgroundImage: 'linear-gradient(transparent 50%, #000 50%)', backgroundSize: '100% 4px' }} />
       
