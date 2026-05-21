@@ -16,12 +16,14 @@ export default function NarrativeBox({ text, onComplete }: NarrativeBoxProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [charIndex, setCharIndex] = useState(0);
+  const [hasCompleted, setHasCompleted] = useState(false);
 
   // Reset entirely when the root text changes
   useEffect(() => {
     setCurrentPage(0);
     setDisplayedText("");
     setCharIndex(0);
+    setHasCompleted(false);
   }, [text]);
 
   // Handle typing effect for the current page
@@ -36,11 +38,14 @@ export default function NarrativeBox({ text, onComplete }: NarrativeBoxProps) {
       }, 20); // Typing speed
       return () => clearTimeout(timer);
     } else {
-      if (onComplete && currentPage === pages.length - 1) {
-        onComplete();
+      if (currentPage === pages.length - 1 && !hasCompleted) {
+        setHasCompleted(true);
+        if (onComplete) {
+          onComplete();
+        }
       }
     }
-  }, [charIndex, currentPage, pages, onComplete]);
+  }, [charIndex, currentPage, pages, onComplete, hasCompleted]);
 
   const handleNext = () => {
     if (currentPage < pages.length - 1) {
@@ -99,7 +104,7 @@ export default function NarrativeBox({ text, onComplete }: NarrativeBoxProps) {
           disabled={currentPage === 0}
           className="flex items-center gap-1 text-gray-500 hover:text-[var(--neon-green)] disabled:opacity-30 disabled:hover:text-gray-500 transition-colors"
         >
-          <ChevronLeft size={20} /> <span className="font-mono text-sm">?전 ?용</span>
+          <ChevronLeft size={20} /> <span className="font-mono text-sm">이전 내용</span>
         </button>
 
         {isTyping ? (
@@ -107,7 +112,7 @@ export default function NarrativeBox({ text, onComplete }: NarrativeBoxProps) {
             onClick={handleSkip}
             className="flex items-center gap-1 font-mono text-sm text-gray-400 hover:text-white transition-colors"
           >
-            ?킵 <SkipForward size={16} />
+            스킵 <SkipForward size={16} />
           </button>
         ) : (
           <button 
@@ -115,7 +120,7 @@ export default function NarrativeBox({ text, onComplete }: NarrativeBoxProps) {
             disabled={currentPage === pages.length - 1}
             className={`flex items-center gap-1 transition-colors ${currentPage === pages.length - 1 ? 'text-gray-600 opacity-50' : 'text-[var(--neon-green)] hover:text-[var(--foreground)]'}`}
           >
-            <span className="font-mono text-sm">?음 ?용</span> <ChevronRight size={20} />
+            <span className="font-mono text-sm">다음 내용</span> <ChevronRight size={20} />
           </button>
         )}
       </div>

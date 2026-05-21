@@ -1,5 +1,6 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
+import { GameProgressProvider } from "@/components/GameProgressProvider";
 
 export const metadata: Metadata = {
   title: "The Invisible Architect",
@@ -18,7 +19,9 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" />
       </head>
       <body className="h-full flex flex-col overflow-hidden text-foreground bg-background">
-        {children}
+        <GameProgressProvider>
+          {children}
+        </GameProgressProvider>
       </body>
     </html>
   );

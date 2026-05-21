@@ -5,22 +5,32 @@ import { useRouter } from "next/navigation";
 import ShellLayout from "@/components/ShellLayout";
 import CustomBarChart from "@/components/CustomBarChart";
 import { stage3Config } from "@/data/gameConfig";
-import { ArrowRight, Search, FileText } from "lucide-react";
+import { ArrowRight, Search, FileText, Lock } from "lucide-react";
+import { useGameProgress } from "@/components/GameProgressProvider";
 import { motion } from "framer-motion";
 
 export default function Stage3Page() {
   const router = useRouter();
+  const { unlockStage } = useGameProgress();
   const [selectedSuspect, setSelectedSuspect] = useState<number | null>(null);
   const [isResolved, setIsResolved] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [isIntroRead, setIsIntroRead] = useState(false);
+  const [isSuccessRead, setIsSuccessRead] = useState(false);
 
   let narrativeText = stage3Config.narrative.intro;
   if (isResolved) {
     narrativeText = stage3Config.narrative.success;
+  } else if (selectedSuspect !== null) {
+    // If suspect selected, show analysis info
+    if (selectedSuspect === 3) {
+      narrativeText = "계량문체학 분석 결과, 용의자 C의 이메일 문체 특징(명사/대명사 비율, 문장당 단어 수, 문맥 특징 등)이 협박 메일의 핵심 분포 패턴과 완벽하게 일치합니다.\n\n이는 단순 우연으로 볼 수 없으며, 용의자 C가 동일 인물(협박 메일의 작성자)이라는 강력한 통계적 증거입니다.\n\n자, 이제 우측의 분석 패널에서 최종 진범 특정을 완료하십시오.";
+    } else {
+      narrativeText = `>> [계량문체학 분석 대조: ${stage3Config.data.suspects[selectedSuspect].name}]\n\n협박 메일과 해당 용의자의 문체 상관관계를 계량 분석한 결과, 통계적 불일치가 감지되었습니다.\n두 텍스트의 어휘 사용 밀도와 통사적 습관이 다릅니다.\n이 용의자는 메일 작성자가 아닙니다. 다른 용의자를 분석하십시오.`;
+    }
   }
 
   // Format data for chart
-  // Data looks like: [{ name: "Feature", threat: 85, suspect: 20 }]
   const getChartData = () => {
     if (selectedSuspect === null) return [];
     const threatData = stage3Config.data.suspects[0].values;
@@ -43,7 +53,28 @@ export default function Stage3Page() {
     }
   };
 
-  const visualization = (
+  const handleNarrativeComplete = () => {
+    if (!isResolved) {
+      setIsIntroRead(true);
+    } else {
+      setIsSuccessRead(true);
+    }
+  };
+
+  const securityLock = (
+    <div className="flex flex-col items-center justify-center h-full p-8 font-mono text-center border border-dashed border-red-500/30 rounded-lg bg-red-950/5">
+      <Lock className="text-[var(--crimson-red)] animate-pulse mb-4" size={32} />
+      <h3 className="text-lg font-bold text-[var(--crimson-red)] uppercase tracking-wider mb-2">
+        보안 제어 잠금 (SYS_LOCK)
+      </h3>
+      <p className="text-sm text-gray-500 max-w-sm leading-relaxed">
+        사건 데이터 분석 및 제어 장치가 비활성화되어 있습니다.
+        먼저 좌측의 시스템 대화 로그(NARRATIVE_LOG)를 끝까지 읽어 수사 요건을 활성화하십시오.
+      </p>
+    </div>
+  );
+
+  const visualization = !isIntroRead ? securityLock : (
     <div className="w-full h-full p-4 flex flex-col items-center">
       <h2 className="text-xl font-mono text-[var(--neon-green)] mb-6 tracking-widest drop-shadow-[0_0_8px_rgba(57,255,20,0.8)]">
         {selectedSuspect ? `계량문체학 분석: 협박 메일 vs ${stage3Config.data.suspects[selectedSuspect].name}` : "문체 상관관계 대조표"}
@@ -69,7 +100,11 @@ export default function Stage3Page() {
     </div>
   );
 
-  const controls = (
+  const controls = !isIntroRead ? (
+    <div className="flex flex-col h-full justify-center items-center p-6 text-center font-mono">
+      <p className="text-gray-500 text-sm">대화 분석 완료 시 제어 인터페이스 활성화</p>
+    </div>
+  ) : (
     <div className="flex flex-col h-full justify-center gap-6 px-8">
       <div className="flex flex-col bg-black/40 p-6 rounded border border-gray-800">
         <div className="flex items-center gap-3 mb-4">
@@ -105,10 +140,21 @@ export default function Stage3Page() {
         </motion.div>
       )}
 
-      {isResolved && (
+      {isResolved && !isSuccessRead && (
+        <div className="flex flex-col items-end mt-4">
+          <p className="text-sm text-gray-500 font-mono animate-pulse">
+            사건 분석 완료. 결과 로그 분석 대기 중...
+          </p>
+        </div>
+      )}
+
+      {isResolved && isSuccessRead && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-end mt-4">
           <button 
-            onClick={() => router.push("/stage4")}
+            onClick={() => {
+              unlockStage(4);
+              router.push("/stage4");
+            }}
             className="flex items-center gap-2 px-6 py-3 bg-[var(--neon-green)] text-black font-bold font-mono hover:shadow-[0_0_15px_var(--neon-green)] transition-all"
           >
             다음 추리 단계로 <ArrowRight size={20} />
@@ -123,6 +169,7 @@ export default function Stage3Page() {
       narrativeText={narrativeText}
       visualization={visualization}
       controls={controls}
+      onNarrativeComplete={handleNarrativeComplete}
     />
   );
 }

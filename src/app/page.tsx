@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Terminal, ShieldAlert } from "lucide-react";
 import { motion } from "framer-motion";
+import { useGameProgress } from "@/components/GameProgressProvider";
 
 export default function IntroPage() {
   const router = useRouter();
+  const { deviceId, maxUnlockedStage, resetProgress } = useGameProgress();
   const [logs, setLogs] = useState<string[]>([]);
   const [bootComplete, setBootComplete] = useState(false);
 
@@ -77,18 +79,37 @@ export default function IntroPage() {
           <motion.div 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center gap-4"
+            className="flex flex-col items-center gap-4 w-full"
           >
-            <p className="text-gray-400 font-mono text-center">
+            <p className="text-gray-400 font-mono text-center mb-4">
+              {maxUnlockedStage > 0 && <span className="text-[var(--neon-green)] block mb-2">[ 접속됨: AGENT {deviceId} ]</span>}
               당신의 무기는 직감이 아닌 '차가운 데이터'입니다.<br/>
               통계의 편견을 부수고 진범을 찾아내십시오.
             </p>
-            <button
-              onClick={() => router.push("/stage1")}
-              className="px-8 py-4 bg-transparent border-2 border-[var(--neon-green)] text-[var(--neon-green)] font-mono font-bold text-xl hover:bg-[var(--neon-green)] hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.3)] hover:shadow-[0_0_25px_rgba(57,255,20,0.6)]"
-            >
-              [ SYSTEM LOGIN ]
-            </button>
+            
+            {maxUnlockedStage > 0 ? (
+              <div className="flex flex-col gap-4 w-full max-w-md mt-4">
+                <button
+                  onClick={() => router.push(maxUnlockedStage === 6 ? "/epilogue" : `/stage${maxUnlockedStage}`)}
+                  className="w-full px-8 py-3 bg-[var(--neon-green)] text-black font-mono font-bold text-lg hover:shadow-[0_0_20px_rgba(57,255,20,0.6)] transition-all"
+                >
+                  [ 진행 데이터 이어서 하기 (Stage {maxUnlockedStage}) ]
+                </button>
+                <button
+                  onClick={resetProgress}
+                  className="w-full px-8 py-3 bg-transparent border border-gray-600 text-gray-400 font-mono font-bold hover:bg-gray-800 hover:text-white transition-all"
+                >
+                  [ 새로 시작 (데이터 초기화) ]
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => router.push("/prologue")}
+                className="px-8 py-4 bg-transparent border-2 border-[var(--neon-green)] text-[var(--neon-green)] font-mono font-bold text-xl hover:bg-[var(--neon-green)] hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.3)] hover:shadow-[0_0_25px_rgba(57,255,20,0.6)] mt-4"
+              >
+                [ 시스템 가동 (프롤로그) ]
+              </button>
+            )}
           </motion.div>
         )}
       </div>

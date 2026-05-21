@@ -3,14 +3,18 @@
 import React from "react";
 import NarrativeBox from "./NarrativeBox";
 import { Terminal, Cpu, Database, Wifi } from "lucide-react";
+import { useGameProgress } from "./GameProgressProvider";
 
 interface ShellLayoutProps {
   narrativeText: string;
   visualization: React.ReactNode;
   controls: React.ReactNode;
+  onNarrativeComplete?: () => void;
 }
 
-export default function ShellLayout({ narrativeText, visualization, controls }: ShellLayoutProps) {
+export default function ShellLayout({ narrativeText, visualization, controls, onNarrativeComplete }: ShellLayoutProps) {
+  const { deviceId } = useGameProgress();
+  
   return (
     <div className="flex flex-col w-full h-full p-4 gap-4 bg-[var(--background)] cyber-border">
       {/* Top Header / Status Bar */}
@@ -22,7 +26,7 @@ export default function ShellLayout({ narrativeText, visualization, controls }: 
         <div className="flex items-center gap-6 text-xs font-mono text-gray-500">
           <div className="flex items-center gap-1"><Cpu size={14} className="text-gray-400"/> CPU: 82%</div>
           <div className="flex items-center gap-1"><Database size={14} className="text-gray-400"/> RAM: 4.2GB/8.0GB</div>
-          <div className="flex items-center gap-1 text-[var(--neon-green)] animate-pulse"><Wifi size={14}/> ONLINE</div>
+          <div className="flex items-center gap-1 text-[var(--neon-green)] animate-pulse"><Wifi size={14}/> ONLINE [{deviceId}]</div>
         </div>
       </div>
 
@@ -30,7 +34,7 @@ export default function ShellLayout({ narrativeText, visualization, controls }: 
         {/* Left Column: Narrative (40%) */}
         <div className="w-full md:w-2/5 md:h-full flex flex-col gap-4 overflow-hidden">
           <div className="flex-[3] bg-[var(--panel-bg)] border border-[#222] rounded-md overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
-            <NarrativeBox text={narrativeText} />
+            <NarrativeBox text={narrativeText} onComplete={onNarrativeComplete} />
           </div>
           <div className="flex-[2] bg-[var(--panel-bg)] border border-[#222] rounded-md overflow-y-auto p-4 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] custom-scrollbar">
             {controls}
