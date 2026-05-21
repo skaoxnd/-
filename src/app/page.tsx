@@ -90,7 +90,7 @@ export default function IntroPage() {
             {maxUnlockedStage > 0 ? (
               <div className="flex flex-col gap-4 w-full max-w-md mt-4">
                 <button
-                  onClick={() => router.push(maxUnlockedStage === 6 ? "/epilogue" : `/stage${maxUnlockedStage}`)}
+                  onClick={() => router.push(maxUnlockedStage === 5 ? "/epilogue" : `/stage${maxUnlockedStage}`)}
                   className="w-full px-8 py-3 bg-[var(--neon-green)] text-black font-mono font-bold text-lg hover:shadow-[0_0_20px_rgba(57,255,20,0.6)] transition-all"
                 >
                   [ 진행 데이터 이어서 하기 (Stage {maxUnlockedStage}) ]

@@ -43,7 +43,7 @@ export default function ShellLayout({ narrativeText, visualization, controls, on
 
         {/* Right Column: Visualization & Controls (60%) */}
         <div className="w-full md:w-3/5 h-2/3 md:h-full flex flex-col">
-          <div className="flex-1 bg-[var(--panel-bg)] border border-[#222] rounded-md overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
+          <div className="flex-1 bg-[var(--panel-bg)] border border-[#222] rounded-md overflow-y-auto custom-scrollbar shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]">
             {visualization}
           </div>
         </div>

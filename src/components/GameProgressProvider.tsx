@@ -9,15 +9,14 @@ const getStageNum = (path: string) => {
   if (path === "/stage2") return 2;
   if (path === "/stage3") return 3;
   if (path === "/stage4") return 4;
-  if (path === "/stage5") return 5;
-  if (path === "/epilogue") return 6;
+  if (path === "/epilogue") return 5;
   return -1; // root or unknown
 };
 
 const getPathFromStage = (stage: number) => {
   if (stage === 0) return "/prologue";
-  if (stage === 6) return "/epilogue";
-  if (stage >= 1 && stage <= 5) return `/stage${stage}`;
+  if (stage === 5) return "/epilogue";
+  if (stage >= 1 && stage <= 4) return `/stage${stage}`;
   return "/";
 };
 
